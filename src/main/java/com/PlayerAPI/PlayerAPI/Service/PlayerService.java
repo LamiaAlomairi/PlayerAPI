@@ -5,6 +5,8 @@ import com.PlayerAPI.PlayerAPI.Repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlayerService {
     @Autowired
@@ -13,5 +15,10 @@ public class PlayerService {
     /*****  Add Player *****/
     public void addPlayer(Player player){
         playerRepository.save(player);
+    }
+
+    /*****  Get All Players *****/
+    public List<Player> getAllPlayers() {
+        return playerRepository.findAll();
     }
 }
