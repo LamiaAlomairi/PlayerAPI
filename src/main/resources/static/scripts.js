@@ -86,3 +86,80 @@ function addNewPlayer() {
   });
 }
 
+
+/***********************************************************************************************************************/
+/* Put Player by id */
+function updatePlayerDetails() {
+  var detailsDiv = document.getElementById("details");
+  detailsDiv.innerHTML = "<h2>Update Player Details</h2><form id='updatePlayerForm'>" +
+    "<label for='playerId'>Player ID:</label> <input type='text' id='playerId' name='playerId' required><br><br>" +
+    "<button type='submit'>Get Details</button></form>";
+    
+  var updatePlayerForm = document.getElementById("updatePlayerForm");
+  updatePlayerForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    var playerIdInput = document.getElementById("playerId");
+    var playerId = playerIdInput.value;
+
+    fetch("http://localhost:8080/api/player/" + playerId)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch player details");
+        }
+      })
+      .then((player) => {
+        showPlayerDetailsForm(player);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        detailsDiv.innerHTML = "<h2>Error</h2><p>Failed to fetch player details.</p>";
+      });
+  });
+}
+
+function showPlayerDetailsForm(player) {
+  var detailsDiv = document.getElementById("details");
+  detailsDiv.innerHTML = "<h2>Update Player Details</h2><form id='updateForm'>" +
+    "<input type='hidden' id='playerId' name='playerId' value='" + player.id + "'>" +
+    "<label for='name'>Name:</label> <input type='text' id='name' name='name' value='" + player.name + "' required><br><br>" +
+    "<label for='email'>Email:</label> <input type='email' id='email' name='email' value='" + player.email + "' required><br><br>" +
+    "<button type='submit'>Update</button></form>";
+
+  var updateForm = document.getElementById("updateForm");
+  updateForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    var playerIdInput = document.getElementById("playerId");
+    var nameInput = document.getElementById("name");
+    var emailInput = document.getElementById("email");
+
+    var updatedPlayer = {
+      id: playerIdInput.value,
+      name: nameInput.value,
+      email: emailInput.value
+    };
+
+    fetch("http://localhost:8080/api/player/" + playerIdInput.value, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedPlayer)
+    })
+    .then((response) => {
+      if (response.ok) {
+        alert("Player details updated successfully!");
+        updatePlayerDetails();
+      } else {
+        throw new Error("Failed to update player details");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      detailsDiv.innerHTML = "<h2>Error</h2><p>Failed to update player details.</p>";
+    });
+  });
+}
+
+
