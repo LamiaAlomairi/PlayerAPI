@@ -31,4 +31,16 @@ public class PlayerService {
     public void deletePlayerById(Integer id) {
         playerRepository.deleteById(id);
     }
+
+    /*****  Update Player By Id *****/
+    public Player updatePlayer(Integer id, Player player) {
+        Player existingPlayer = playerRepository.findById(id).orElse(null);
+
+        if (existingPlayer != null) {
+            existingPlayer.setName(player.getName());
+            existingPlayer.setEmail(player.getEmail());
+            return playerRepository.save(existingPlayer);
+        }
+        return null;
+    }
 }
