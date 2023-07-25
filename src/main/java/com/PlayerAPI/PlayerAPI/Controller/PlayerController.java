@@ -25,4 +25,10 @@ public class PlayerController {
     public List<Player> getAllPlayers() {
         return playerService.getAllPlayers();
     }
+
+    /*****  Get Player By Id *****/
+    @GetMapping("/{id}")
+    public Player getPlayerById(@PathVariable Integer id) {
+        return playerService.getPlayerById(id);
+    }
 }
