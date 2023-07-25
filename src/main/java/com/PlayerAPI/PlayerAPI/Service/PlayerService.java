@@ -21,4 +21,9 @@ public class PlayerService {
     public List<Player> getAllPlayers() {
         return playerRepository.findAll();
     }
+
+    /*****  Get Player By Id *****/
+    public Player getPlayerById(Integer id) {
+        return playerRepository.findById(id).get();
+    }
 }
