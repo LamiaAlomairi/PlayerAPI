@@ -26,4 +26,9 @@ public class PlayerService {
     public Player getPlayerById(Integer id) {
         return playerRepository.findById(id).get();
     }
+
+    /*****  Delete Player By Id *****/
+    public void deletePlayerById(Integer id) {
+        playerRepository.deleteById(id);
+    }
 }
