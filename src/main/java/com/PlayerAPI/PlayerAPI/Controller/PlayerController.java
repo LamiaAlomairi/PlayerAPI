@@ -31,4 +31,10 @@ public class PlayerController {
     public Player getPlayerById(@PathVariable Integer id) {
         return playerService.getPlayerById(id);
     }
+
+    /*****  Delete Player By Id *****/
+    @DeleteMapping("/{id}")
+    public void deletePlayerById(@PathVariable Integer id) {
+        playerService.deletePlayerById(id);
+    }
 }
