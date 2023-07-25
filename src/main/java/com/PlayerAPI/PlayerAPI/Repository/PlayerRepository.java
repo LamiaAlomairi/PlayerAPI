@@ -1,4 +1,7 @@
 package com.PlayerAPI.PlayerAPI.Repository;
 
-public interface PlayerRepository {
+import com.PlayerAPI.PlayerAPI.Model.Player;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlayerRepository extends JpaRepository<Player, Integer> {
 }
