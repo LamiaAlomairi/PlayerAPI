@@ -3,6 +3,7 @@ package com.PlayerAPI.PlayerAPI.Controller;
 import com.PlayerAPI.PlayerAPI.Model.Player;
 import com.PlayerAPI.PlayerAPI.Service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +37,16 @@ public class PlayerController {
     @DeleteMapping("/{id}")
     public void deletePlayerById(@PathVariable Integer id) {
         playerService.deletePlayerById(id);
+    }
+
+    /*****  Update Player By Id *****/
+    @PutMapping("/{id}")
+    public ResponseEntity<Player> updatePlayer(@PathVariable Integer id, @RequestBody Player updateData){
+        Player player = playerService.updatePlayer(id, updateData);
+        if (player != null) {
+            return ResponseEntity.ok(player);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
