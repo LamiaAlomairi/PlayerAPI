@@ -163,3 +163,69 @@ function showPlayerDetailsForm(player) {
 }
 
 
+
+/***********************************************************************************************************************/
+
+/* Delete Player by id */
+function deletePlayer() {
+  var detailsDiv = document.getElementById("details");
+  detailsDiv.innerHTML = "<h2>Delete Player</h2><form id='deletePlayerForm'>" +
+    "<label for='playerIdInput'>Player ID:</label><br>" +
+    "<input type='text' id='playerIdInput' name='playerIdInput' required onclick='getPlayerIds()'><br><br>" +
+    "<button type='button' onclick='deletePlayerById()'>Delete</button></form>";
+}
+
+function getPlayerIds() {
+  fetch("http://localhost:8080/api/player") // Assuming this endpoint returns an array of player objects
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Failed to fetch player IDs");
+      }
+    })
+    .then((players) => {
+      var playerIdInput = document.getElementById("playerIdInput");
+      playerIdInput.setAttribute("list", "playerIdsList");
+
+      var datalist = document.createElement("datalist");
+      datalist.id = "playerIdsList";
+
+      players.forEach((player) => {
+        var option = document.createElement("option");
+        option.value = player.id;
+        datalist.appendChild(option);
+      });
+
+      var form = document.getElementById("deletePlayerForm");
+      form.appendChild(datalist);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function deletePlayerById() {
+  var playerIdInput = document.getElementById("playerIdInput");
+  var playerId = playerIdInput.value;
+
+  var detailsDiv = document.getElementById("details");
+  detailsDiv.innerHTML = "<h2>Deleting Player...</h2>";
+
+  fetch("http://localhost:8080/api/player/" + playerId, {
+    method: "DELETE"
+  })
+    .then((response) => {
+      if (response.ok) {
+        alert("Player with ID " + playerId + " has been deleted.");
+        playerIdInput.value = ""; // Clear the input textbox after successful deletion
+        deletePlayer(); // Re-render the form after successful deletion
+      } else {
+        throw new Error("Failed to delete player");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      detailsDiv.innerHTML = "<h2>Error</h2><p>Failed to delete player.</p>";
+    });
+}
